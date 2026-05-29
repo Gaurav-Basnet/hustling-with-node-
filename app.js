@@ -1,13 +1,19 @@
-
 const express = require("express");
+const {connectmongo} =require("./connection");
+const {logReqRes} = require('./middlewares');
+const userRouter= require("./routes/user");
+ const app = express();
+ app.use(express.json());
 
-const app = express();
+connectmongo("mongodb://127.0.0.1:27017/first-app");
+
+
+app.use('/users',userRouter);
 app.get('/',(req,res)=>{
-  return res.send("Hello");
+  return res.json("Hellow World");
 })
-app.get('/about',(req,res)=>{
-  return res.send("aabout");
-})
+app.use(logReqRes("test.txt"));
 
-
-app.listen(8000,()=>{console.log("Muji run vo")})
+app.listen(8000, () => {
+  console.log("Server running on port 8000");
+});
